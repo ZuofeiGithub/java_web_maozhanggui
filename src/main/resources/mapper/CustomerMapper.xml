@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huiketong.catshopkeeper.dao.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.huiketong.catshopkeeper.entity.Customer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="customer_phone" jdbcType="VARCHAR" property="customerPhone" />
+    <result column="customer__address" jdbcType="VARCHAR" property="customerAddress" />
+    <result column="businessId" jdbcType="INTEGER" property="businessid" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, customer_name, customer_phone, customer__address, businessId, addTime
+  </sql>
+
+
+
+  <!-- 分页获取客户列表-->
+  <select id="getCustomerLimit" parameterType="java.lang.Integer" resultType="java.util.Map">
+     select t.*  from  customer t
+    <if test="businessId != null and businessId !=1 and businessId !=''">
+      where t.businessId=#{businessId}
+    </if>
+    limit #{pageSize}, #{limit}
+  </select>
+
+
+  <!--获取客户总数-->
+  <select id="getCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    count(1)
+    from customer t
+    <if test="businessId != null and businessId !=1 and businessId !=''">
+      where t.businessId=#{businessId}
+    </if>
+  </select>
+
+
+  <!--删除设计图-->
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huiketong.catshopkeeper.entity.Customer">
+    insert into customer (id, customer_name, customer_phone, 
+      customer__address, businessId, addTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{customerPhone,jdbcType=VARCHAR}, 
+      #{customerAddress,jdbcType=VARCHAR}, #{businessid,jdbcType=INTEGER}, #{addtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <!--添加客户-->
+  <insert id="addCustomer" parameterType="com.huiketong.catshopkeeper.entity.Customer">
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerName != null">
+        customer_name,
+      </if>
+      <if test="customerPhone != null">
+        customer_phone,
+      </if>
+      <if test="customerAddress != null">
+        customer__address,
+      </if>
+      <if test="businessid != null">
+        businessId,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPhone != null">
+        #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="customerAddress != null">
+        #{customerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null">
+        #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <!--修改客户-->
+  <update id="updateCustomer" parameterType="com.huiketong.catshopkeeper.entity.Customer">
+    update customer
+    <set>
+      <if test="customerName != null">
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPhone != null">
+        customer_phone = #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="customerAddress != null">
+        customer__address = #{customerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null">
+        businessId = #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.huiketong.catshopkeeper.entity.Customer">
+    update customer
+    set customer_name = #{customerName,jdbcType=VARCHAR},
+      customer_phone = #{customerPhone,jdbcType=VARCHAR},
+      customer__address = #{customerAddress,jdbcType=VARCHAR},
+      businessId = #{businessid,jdbcType=INTEGER},
+      addTime = #{addtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

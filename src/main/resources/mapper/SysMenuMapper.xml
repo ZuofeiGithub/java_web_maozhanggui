@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huiketong.catshopkeeper.dao.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="com.huiketong.catshopkeeper.entity.SysMenu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="menu_class" jdbcType="VARCHAR" property="menuClass" />
+    <result column="menu_type" jdbcType="VARCHAR" property="menuType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, menu_name, parent_id, url, menu_class, menu_type
+  </sql>
+
+  <!--根据用户id获取用户菜单权限-->
+  <select id="getSysMenuListByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+   SELECT     c.id, c.menu_name, c.parent_id, c.url, c.menu_class, c.menu_type  from  sys_user_role a left join   sys_role_menu b
+
+on a.role_id=b.role_id  left join sys_menu c
+
+on b.menu_id=c.id where a.user_id=#{userId}
+
+  </select>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huiketong.catshopkeeper.entity.SysMenu">
+    insert into sys_menu (id, menu_name, parent_id, 
+      url, menu_class, menu_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{url,jdbcType=VARCHAR}, #{menuClass,jdbcType=VARCHAR}, #{menuType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huiketong.catshopkeeper.entity.SysMenu">
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="menuName != null">
+        menu_name,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="menuClass != null">
+        menu_class,
+      </if>
+      <if test="menuType != null">
+        menu_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="menuClass != null">
+        #{menuClass,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null">
+        #{menuType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huiketong.catshopkeeper.entity.SysMenu">
+    update sys_menu
+    <set>
+      <if test="menuName != null">
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="menuClass != null">
+        menu_class = #{menuClass,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null">
+        menu_type = #{menuType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huiketong.catshopkeeper.entity.SysMenu">
+    update sys_menu
+    set menu_name = #{menuName,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      menu_class = #{menuClass,jdbcType=VARCHAR},
+      menu_type = #{menuType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

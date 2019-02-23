@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huiketong.catshopkeeper.dao.DeviceManagementMapper">
+  <resultMap id="BaseResultMap" type="com.huiketong.catshopkeeper.entity.DeviceManagement">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="deviceCode" jdbcType="VARCHAR" property="devicecode" />
+    <result column="deviceName" jdbcType="VARCHAR" property="devicename" />
+    <result column="deviceStatus" jdbcType="INTEGER" property="devicestatus" />
+    <result column="deviceAddress" jdbcType="VARCHAR" property="deviceaddress" />
+    <result column="device_longitude" jdbcType="VARCHAR" property="deviceLongitude" />
+    <result column="device_dimension" jdbcType="VARCHAR" property="deviceDimension" />
+    <result column="businessId" jdbcType="INTEGER" property="businessid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, deviceCode, deviceName, deviceStatus, deviceAddress, device_longitude, device_dimension, 
+    businessId
+  </sql>
+
+  <!-- 分页获取设备列表-->
+  <select id="getDeviceLimit" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from device_management t
+    <if test="businessId != null and businessId !=1 and businessId !=''">
+      where t.businessId=#{businessId}
+    </if>
+    limit #{pageSize}, #{limit}
+  </select>
+
+  <!--获取设备总数-->
+  <select id="getCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+       count(1)
+    from device_management t
+    <if test="businessId != null and businessId !=1 and businessId !=''">
+      where t.businessId=#{businessId}
+    </if>
+  </select>
+
+  <!--删除设备-->
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from device_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from device_management
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from device_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huiketong.catshopkeeper.entity.DeviceManagement">
+    insert into device_management (id, deviceCode, deviceName, 
+      deviceStatus, deviceAddress, device_longitude, 
+      device_dimension, businessId)
+    values (#{id,jdbcType=INTEGER}, #{devicecode,jdbcType=VARCHAR}, #{devicename,jdbcType=VARCHAR}, 
+      #{devicestatus,jdbcType=INTEGER}, #{deviceaddress,jdbcType=VARCHAR}, #{deviceLongitude,jdbcType=VARCHAR}, 
+      #{deviceDimension,jdbcType=VARCHAR}, #{businessid,jdbcType=INTEGER})
+  </insert>
+
+  <!--添加设备-->
+  <insert id="addDeviceManagement" parameterType="com.huiketong.catshopkeeper.entity.DeviceManagement">
+    insert into device_management
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="devicecode != null">
+        deviceCode,
+      </if>
+      <if test="devicename != null">
+        deviceName,
+      </if>
+      <if test="devicestatus != null">
+        deviceStatus,
+      </if>
+      <if test="deviceaddress != null">
+        deviceAddress,
+      </if>
+      <if test="deviceLongitude != null">
+        device_longitude,
+      </if>
+      <if test="deviceDimension != null">
+        device_dimension,
+      </if>
+      <if test="businessid != null">
+        businessId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="devicecode != null">
+        #{devicecode,jdbcType=VARCHAR},
+      </if>
+      <if test="devicename != null">
+        #{devicename,jdbcType=VARCHAR},
+      </if>
+      <if test="devicestatus != null">
+        #{devicestatus,jdbcType=INTEGER},
+      </if>
+      <if test="deviceaddress != null">
+        #{deviceaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceLongitude != null">
+        #{deviceLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceDimension != null">
+        #{deviceDimension,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null">
+        #{businessid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!--修改设备-->
+  <update id="updateDeviceManagement" parameterType="com.huiketong.catshopkeeper.entity.DeviceManagement">
+    update device_management
+    <set>
+      <if test="devicecode != null">
+        deviceCode = #{devicecode,jdbcType=VARCHAR},
+      </if>
+      <if test="devicename != null">
+        deviceName = #{devicename,jdbcType=VARCHAR},
+      </if>
+      <if test="devicestatus != null">
+        deviceStatus = #{devicestatus,jdbcType=INTEGER},
+      </if>
+      <if test="deviceaddress != null">
+        deviceAddress = #{deviceaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceLongitude != null">
+        device_longitude = #{deviceLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceDimension != null">
+        device_dimension = #{deviceDimension,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null">
+        businessId = #{businessid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huiketong.catshopkeeper.entity.DeviceManagement">
+    update device_management
+    set deviceCode = #{devicecode,jdbcType=VARCHAR},
+      deviceName = #{devicename,jdbcType=VARCHAR},
+      deviceStatus = #{devicestatus,jdbcType=INTEGER},
+      deviceAddress = #{deviceaddress,jdbcType=VARCHAR},
+      device_longitude = #{deviceLongitude,jdbcType=VARCHAR},
+      device_dimension = #{deviceDimension,jdbcType=VARCHAR},
+      businessId = #{businessid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

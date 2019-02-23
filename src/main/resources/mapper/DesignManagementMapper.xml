@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huiketong.catshopkeeper.dao.DesignManagementMapper">
+  <resultMap id="BaseResultMap" type="com.huiketong.catshopkeeper.entity.DesignManagement">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="design_area" jdbcType="INTEGER" property="designArea" />
+    <result column="design_style" jdbcType="INTEGER" property="designStyle" />
+    <result column="design_budget" jdbcType="INTEGER" property="designBudget" />
+    <result column="design_url" jdbcType="VARCHAR" property="designUrl" />
+    <result column="businessId" jdbcType="INTEGER" property="businessid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, design_area, design_style, design_budget, design_url, businessId
+  </sql>
+
+
+  <!-- 分页获取设计图列表-->
+  <select id="getDesignLimit" parameterType="java.lang.Integer" resultType="java.util.Map">
+  SELECT  t.id , t.design_url,t.businessId, t.design_area,t.design_budget,t.design_style,   a.name area ,b.`name` budget,c.`name`  style from   design_management t left join sys_dictionaries a
+   on t.design_area=a.id left join sys_dictionaries b
+   on t.design_budget=b.id left join sys_dictionaries c
+   on t.design_style=c.id
+    <if test="businessId != null and businessId !=1 and businessId !=''">
+    where t.businessId=#{businessId}
+    </if>
+    limit #{pageSize}, #{limit}
+  </select>
+
+
+  <!--获取设计图总数-->
+  <select id="getCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+       count(1)
+    from design_management t
+     <if test="businessId != null and businessId !=1 and businessId !=''">
+     where t.businessId=#{businessId}
+  </if>
+  </select>
+
+
+  <!--删除设计图-->
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from design_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from design_management
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from design_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huiketong.catshopkeeper.entity.DesignManagement">
+    insert into design_management (id, design_area, design_style, 
+      design_budget, design_url, businessId
+      )
+    values (#{id,jdbcType=INTEGER}, #{designArea,jdbcType=INTEGER}, #{designStyle,jdbcType=INTEGER}, 
+      #{designBudget,jdbcType=INTEGER}, #{designUrl,jdbcType=VARCHAR}, #{businessid,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <!--添加设计图-->
+  <insert id="addDesignManagement" parameterType="com.huiketong.catshopkeeper.entity.DesignManagement">
+    insert into design_management
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="designArea != null">
+        design_area,
+      </if>
+      <if test="designStyle != null">
+        design_style,
+      </if>
+      <if test="designBudget != null">
+        design_budget,
+      </if>
+      <if test="designUrl != null">
+        design_url,
+      </if>
+      <if test="businessid != null">
+        businessId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="designArea != null">
+        #{designArea,jdbcType=INTEGER},
+      </if>
+      <if test="designStyle != null">
+        #{designStyle,jdbcType=INTEGER},
+      </if>
+      <if test="designBudget != null">
+        #{designBudget,jdbcType=INTEGER},
+      </if>
+      <if test="designUrl != null">
+        #{designUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null">
+        #{businessid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!--修改设计图-->
+  <update id="updateDesignManagement" parameterType="com.huiketong.catshopkeeper.entity.DesignManagement">
+    update design_management
+    <set>
+      <if test="designArea != null">
+        design_area = #{designArea,jdbcType=INTEGER},
+      </if>
+      <if test="designStyle != null">
+        design_style = #{designStyle,jdbcType=INTEGER},
+      </if>
+      <if test="designBudget != null">
+        design_budget = #{designBudget,jdbcType=INTEGER},
+      </if>
+      <if test="designUrl != null">
+        design_url = #{designUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="businessid != null">
+        businessId = #{businessid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.huiketong.catshopkeeper.entity.DesignManagement">
+    update design_management
+    set design_area = #{designArea,jdbcType=INTEGER},
+      design_style = #{designStyle,jdbcType=INTEGER},
+      design_budget = #{designBudget,jdbcType=INTEGER},
+      design_url = #{designUrl,jdbcType=VARCHAR},
+      businessId = #{businessid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huiketong.catshopkeeper.dao.TokenManagerDao">
+
+    <resultMap type="com.huiketong.catshopkeeper.entity.TokenManager" id="TokenManagerMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="accessToken" column="access_token" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="deviceId" column="device_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TokenManagerMap">
+        select
+          id, access_token, update_time, device_id
+        from catshopkeeper.token_manager
+        where id = #{id}
+    </select>
+
+    <select id="queryByDeviceId" resultMap="TokenManagerMap">
+        select
+            id, access_token, update_time, device_id
+        from catshopkeeper.token_manager
+        where device_id = #{deviceId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TokenManagerMap">
+        select
+          id, access_token, update_time, device_id
+        from catshopkeeper.token_manager
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TokenManagerMap">
+        select
+          id, access_token, update_time, device_id
+        from catshopkeeper.token_manager
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="accessToken != null and accessToken != ''">
+                and access_token = #{accessToken}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="deviceId != null and deviceId != ''">
+                and device_id = #{deviceId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into catshopkeeper.token_manager(access_token, update_time, device_id)
+        values (#{accessToken}, #{updateTime}, #{deviceId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update catshopkeeper.token_manager
+        <set>
+            <if test="accessToken != null and accessToken != ''">
+                access_token = #{accessToken},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="deviceId != null and deviceId != ''">
+                device_id = #{deviceId},
+            </if>
+        </set>
+        where device_id = #{deviceId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from catshopkeeper.token_manager where id = #{id}
+    </delete>
+
+</mapper>

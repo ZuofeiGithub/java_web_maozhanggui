@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huiketong.catshopkeeper.dao.BusinessMapper">
+  <resultMap id="BaseResultMap" type="com.huiketong.catshopkeeper.entity.Business">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="businessName" jdbcType="VARCHAR" property="businessname" />
+    <result column="businessPhone" jdbcType="VARCHAR" property="businessphone" />
+    <result column="businessAddress" jdbcType="VARCHAR" property="businessaddress" />
+    <result column="imgUrl" jdbcType="VARCHAR" property="imgurl" />
+    <result column="creationTime" jdbcType="TIMESTAMP" property="creationtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessName, businessPhone, businessAddress, imgUrl, creationTime
+  </sql>
+
+<!-- 分页获取商家列表-->
+  <select id="getBusinessLimit" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from business
+    limit #{pageSize}, #{limit}
+  </select>
+
+  <!-- 获取所有商家列表(下拉框)-->
+  <select id="getBusinessList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from business
+  </select>
+
+<!--获取商家总数-->
+  <select id="getCount"  resultType="java.lang.Integer">
+    select
+       count(1)
+    from business
+  </select>
+
+<!--删除商家-->
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from business
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+<!--添加商家-->
+  <insert id="addBusiness" parameterType="com.huiketong.catshopkeeper.entity.Business">
+    insert into business ( businessName, businessPhone,
+      businessAddress, imgUrl, creationTime
+      )
+    values (#{businessname,jdbcType=VARCHAR}, #{businessphone,jdbcType=VARCHAR},
+      #{businessaddress,jdbcType=VARCHAR}, #{imgurl,jdbcType=VARCHAR}, #{creationtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+<!--修改商家-->
+  <update id="updateBusiness" parameterType="com.huiketong.catshopkeeper.entity.Business">
+    update business
+    <set>
+      <if test="businessname != null">
+        businessName = #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="businessphone != null">
+        businessPhone = #{businessphone,jdbcType=VARCHAR},
+      </if>
+      <if test="businessaddress != null">
+        businessAddress = #{businessaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="imgurl != null">
+        imgUrl = #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="creationtime != null">
+        creationTime = #{creationtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from business
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from business
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.huiketong.catshopkeeper.entity.Business">
+    insert into business
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="businessname != null">
+        businessName,
+      </if>
+      <if test="businessphone != null">
+        businessPhone,
+      </if>
+      <if test="businessaddress != null">
+        businessAddress,
+      </if>
+      <if test="imgurl != null">
+        imgUrl,
+      </if>
+      <if test="creationtime != null">
+        creationTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="businessname != null">
+        #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="businessphone != null">
+        #{businessphone,jdbcType=VARCHAR},
+      </if>
+      <if test="businessaddress != null">
+        #{businessaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="imgurl != null">
+        #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="creationtime != null">
+        #{creationtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huiketong.catshopkeeper.entity.Business">
+    update business
+    <set>
+      <if test="businessname != null">
+        businessName = #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="businessphone != null">
+        businessPhone = #{businessphone,jdbcType=VARCHAR},
+      </if>
+      <if test="businessaddress != null">
+        businessAddress = #{businessaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="imgurl != null">
+        imgUrl = #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="creationtime != null">
+        creationTime = #{creationtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
