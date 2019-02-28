@@ -25,7 +25,7 @@ public class FaceVerify {
             map.put("image", base64Image);
             map.put("image_type", "BASE64");
             //返回年龄，美丑，表情，脸型,性别,是否带眼镜,人种
-            map.put("face_field", "age,beauty,expression,face_shape,gender,glasses,race");
+            map.put("face_field", "age,beauty,expression,face_shape,gender,glasses,race,landmark");
             list.add(map);
             String param = GsonUtils.toJson(list);
             System.out.println(param);
