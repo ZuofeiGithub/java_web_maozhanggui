@@ -1,6 +1,5 @@
 package com.huiketong.catshopkeeper.api.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.huiketong.catshopkeeper.util.GsonUtils;
 import com.huiketong.catshopkeeper.util.HttpUtil;
 

@@ -1,7 +1,5 @@
 package com.huiketong.catshopkeeper.api.service;
 
-import com.huiketong.catshopkeeper.util.Base64Util;
-import com.huiketong.catshopkeeper.util.FileUtil;
 import com.huiketong.catshopkeeper.util.GsonUtils;
 import com.huiketong.catshopkeeper.util.HttpUtil;
 
